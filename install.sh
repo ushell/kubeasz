@@ -23,7 +23,7 @@ REGISTRY_MIRROR=CN
 
 # images needed by k8s cluster
 calicoVer=v3.19.2
-flannelVer=v0.13.0-amd64
+flannelVer=v0.14.0-amd64
 dnsNodeCacheVer=1.17.0
 corednsVer=1.8.4
 dashboardVer=v2.3.1
@@ -349,7 +349,8 @@ function download_all() {
   get_kubeasz && \
   get_k8s_bin && \
   get_ext_bin && \
-  get_offline_image
+  get_offline_image && \
+  install_anisble 
 }
 
 function start_kubeasz_docker() {
@@ -395,6 +396,17 @@ function clean_container() {
  docker ps -a|awk 'NR>1{print $1}'|xargs docker rm -f 
 } 
 
+function install_anisble() {
+  if [ [! -e /usr/bin/pip && -e /bin/pip && -e /usr/local/bin/pip ]; then
+    logger debug "install pip..."
+    apt install pip
+  fi
+
+  if [[ ! -e /usr/bin/ansible && -e /usr/local/bin/ansible ]]; then
+    logger debug "install ansible..."
+    pip install ansible -i http://mirrors.aliyun.com/pypi/simple/
+  fi
+}
 
 ### Main Lines ##################################################
 function main() {

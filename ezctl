@@ -141,22 +141,22 @@ function new() {
     cp example/config.yml "clusters/$1/config.yml"
 
     logger debug "set versions"
-    k8sVer=$(grep 'K8S_BIN_VER=v' ezdown|cut -d'v' -f2)
-    calicoVer=$(grep 'calicoVer=' ezdown|cut -d'=' -f2)
-    ciliumVer=$(grep 'ciliumVer=' ezdown|cut -d'=' -f2)
-    flannelVer=$(grep 'flannelVer=' ezdown|cut -d'=' -f2)
-    kubeRouterVer=$(grep 'kubeRouterVer=' ezdown|cut -d'=' -f2)
-    kubeOvnVer=$(grep 'kubeOvnVer=' ezdown|cut -d'=' -f2)
-    corednsVer=$(grep 'corednsVer=' ezdown|cut -d'=' -f2)
-    dnsNodeCacheVer=$(grep 'dnsNodeCacheVer=' ezdown|cut -d'=' -f2)
-    dashboardVer=$(grep 'dashboardVer=' ezdown|cut -d'=' -f2)
-    dashboardMetricsScraperVer=$(grep 'dashboardMetricsScraperVer=' ezdown|cut -d'=' -f2)
-    metricsVer=$(grep 'metricsVer=' ezdown|cut -d'=' -f2)
-    nfsProvisionerVer=$(grep 'nfsProvisionerVer=' ezdown|cut -d'=' -f2)
-    pauseVer=$(grep 'pauseVer=' ezdown|cut -d'=' -f2)
-    promChartVer=$(grep 'promChartVer=' ezdown|cut -d'=' -f2)
-    traefikChartVer=$(grep 'traefikChartVer=' ezdown|cut -d'=' -f2)
-    harborVer=$(grep 'HARBOR_VER=' ezdown|cut -d'=' -f2)
+    k8sVer=$(grep 'K8S_BIN_VER=v' install.sh|cut -d'v' -f2)
+    calicoVer=$(grep 'calicoVer=' install.sh|cut -d'=' -f2)
+    ciliumVer=$(grep 'ciliumVer=' install.sh|cut -d'=' -f2)
+    flannelVer=$(grep 'flannelVer=' install.sh|cut -d'=' -f2)
+    kubeRouterVer=$(grep 'kubeRouterVer=' install.sh|cut -d'=' -f2)
+    kubeOvnVer=$(grep 'kubeOvnVer=' install.sh|cut -d'=' -f2)
+    corednsVer=$(grep 'corednsVer=' install.sh|cut -d'=' -f2)
+    dnsNodeCacheVer=$(grep 'dnsNodeCacheVer=' install.sh|cut -d'=' -f2)
+    dashboardVer=$(grep 'dashboardVer=' install.sh|cut -d'=' -f2)
+    dashboardMetricsScraperVer=$(grep 'dashboardMetricsScraperVer=' install.sh|cut -d'=' -f2)
+    metricsVer=$(grep 'metricsVer=' install.sh|cut -d'=' -f2)
+    nfsProvisionerVer=$(grep 'nfsProvisionerVer=' install.sh|cut -d'=' -f2)
+    pauseVer=$(grep 'pauseVer=' install.sh|cut -d'=' -f2)
+    promChartVer=$(grep 'promChartVer=' install.sh|cut -d'=' -f2)
+    traefikChartVer=$(grep 'traefikChartVer=' install.sh|cut -d'=' -f2)
+    harborVer=$(grep 'HARBOR_VER=' install.sh|cut -d'=' -f2)
     registryMirror=true
 
     grep registry-mirrors /etc/docker/daemon.json > /dev/null 2>&1 || { logger debug "disable registry mirrors"; registryMirror=false; }
@@ -187,7 +187,7 @@ function new() {
 
 function setup() {
     [[ -d "clusters/$1" ]] || { logger error "invalid config, run 'ezctl new $1' first"; return 1; }
-    [[ -f "bin/kube-apiserver" ]] || { logger error "no binaries founded, run 'ezdown -D' fist"; return 1; }
+    [[ -f "bin/kube-apiserver" ]] || { logger error "no binaries founded, run 'install.sh -D' fist"; return 1; }
 
     # for extending usage
     EXTRA_ARGS=$(echo "$*"|sed "s/$1 $2//g"|sed "s/^ *//g")
@@ -541,7 +541,7 @@ function list-kcfg(){
 ### Main Lines ##################################################
 function main() {
   BASE="/etc/kubeasz"
-  [[ -d "$BASE" ]] || { logger error "invalid dir:$BASE, try: 'ezdown -D'"; exit 1; }
+  [[ -d "$BASE" ]] || { logger error "invalid dir:$BASE, try: 'install.sh -D'"; exit 1; }
   cd "$BASE"
 
   # check bash shell
